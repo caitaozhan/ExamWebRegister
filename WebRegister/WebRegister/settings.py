@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'register',
+    'accounts',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -57,6 +58,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['/register/templates',
+                 '/accounts/templates',
                  'WebRegister/templates'],
         'APP_DIRS': True,
         'OPTIONS': {

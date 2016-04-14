@@ -23,6 +23,6 @@ urlpatterns = [
     url(r'^home$', home, name='home_page'),
     url(r'^guide$', guide, name='guide_page'),
     url(r'^register/', include('register.urls')),
-    url(r'^accounts/profile', 'register.views.profile'),
+    url(r'^accounts/', include('accounts.urls')),
     url(r'^admin/', admin.site.urls),
 ]

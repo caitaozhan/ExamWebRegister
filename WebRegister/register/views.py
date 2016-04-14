@@ -1,10 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 
-from .forms import ExamForm, UserForm
-from .models import ExamInfoModel, StudentInfoModel
+
+from .forms import ExamForm
+from .models import ExamInfoModel
 
 # Create your views here.
 
@@ -13,18 +12,6 @@ from django.http import HttpResponse
 
 def index(request):
     return HttpResponse("考试注册")
-
-
-@login_required
-def profile(request):
-    if request.method == 'GET':
-        profile = {
-            'username': request.user.username,
-            'number': request.user.studentinfomodel.number,
-            'gender': request.user.studentinfomodel.gender,
-            'phone': request.user.studentinfomodel.phone,
-        }
-        return render(request, 'registration/profile.html', context=profile)
 
 
 def add_exam(request):
@@ -40,20 +27,3 @@ def add_exam(request):
     else:
         form = ExamForm()
     return render(request, 'add_exam.html', {'form': form})
-
-
-def add_user(request):
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            new_user = User.objects.create_user(username=form.cleaned_data['username'],
-                                                password=form.cleaned_data['password'])
-            new_student = StudentInfoModel(user=new_user,
-                                           number=form.cleaned_data['number'],
-                                           gender=form.cleaned_data['gender'],
-                                           phone=form.cleaned_data['phone'])
-            new_student.save()
-            return redirect(profile)
-    else:
-        form = UserForm()
-    return render(request, 'registration/signup.html', {'form': form})
