@@ -16,8 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from .views import home, guide
+
 urlpatterns = [
-    url(r'^$', 'register.views.home_page', name='home'),
+    url(r'^$', home, name='home_page'),
+    url(r'^home$', home, name='home_page'),
+    url(r'^guide$', guide, name='guide_page'),
     url(r'^register/', include('register.urls')),
+    url(r'^accounts/profile', 'register.views.profile'),
     url(r'^admin/', admin.site.urls),
 ]
