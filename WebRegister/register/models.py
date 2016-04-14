@@ -23,8 +23,8 @@ class RegistrationInfoModel(models.Model):
 
 class StudentInfoModel(models.Model):
     GENDER_TYPE = (
-        ('MALE', 'Male'),
-        ('FEMALE', 'Female')
+        ('男', '男'),
+        ('女', '女')
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)

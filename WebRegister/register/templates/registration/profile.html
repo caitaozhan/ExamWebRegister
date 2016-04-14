@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
 {% block content %}
 <div>
     <table class="table">
@@ -11,6 +20,14 @@
         <tr>
             <th>学号</th>
             <td>{{ number }}</td>
+        </tr>
+        <tr>
+            <th>性别</th>
+            <td>{{ gender }}</td>
+        </tr>
+        <tr>
+            <th>手机好</th>
+            <td>{{ phone }}</td>
         </tr>
         </tbody>
     </table>

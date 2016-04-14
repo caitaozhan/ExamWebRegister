@@ -38,7 +38,7 @@
                 <li><a href="#">科目</a></li>
                 <li><a href="#">考试</a></li>
                 <li><a href="/guide">报名</a></li>
-                <li><a href="#">用户</a></li>
+                <li><a href="/accounts/profile">用户</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{% url 'login' %}">登录/注册</a></li>
@@ -52,11 +52,11 @@
 <div class="container">
     <div class="content">
         {% block content %}
-        <h1>网上报名系统</h1>
+        <h1>网上考试报名系统</h1>
         <p class="lead">计算机学院(191132)</p>
-        <p>詹才韬</p>
-        <p>王冬冬</p>
-        <p>余宗福</p>
+        <h4>詹才韬</h4>
+        <h4>王冬冬</h4>
+        <h4>余宗福</h4>
         {% endblock content %}
     </div>
 </div>

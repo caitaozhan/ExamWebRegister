@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
@@ -20,6 +21,8 @@ def profile(request):
         profile = {
             'username': request.user.username,
             'number': request.user.studentinfomodel.number,
+            'gender': request.user.studentinfomodel.gender,
+            'phone': request.user.studentinfomodel.phone,
         }
         return render(request, 'registration/profile.html', context=profile)
 
@@ -50,7 +53,7 @@ def add_user(request):
                                            gender=form.cleaned_data['gender'],
                                            phone=form.cleaned_data['phone'])
             new_student.save()
-            return HttpResponse('新用户以保存')
+            return redirect(profile)
     else:
         form = UserForm()
     return render(request, 'registration/signup.html', {'form': form})
