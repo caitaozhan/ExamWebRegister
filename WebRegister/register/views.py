@@ -19,7 +19,7 @@ def profile(request):
     if request.method == 'GET':
         profile = {
             'username': request.user.username,
-            # 'number': request.user.number,
+            'number': request.user.studentinfomodel.number,
         }
         return render(request, 'registration/profile.html', context=profile)
 
