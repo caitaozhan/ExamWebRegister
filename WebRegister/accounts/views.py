@@ -13,13 +13,13 @@ from .forms import UserForm
 @login_required
 def profile(request):
     if request.method == 'GET' and request.user.is_active:
-        profile = {
+        user_profile = {
             'username': request.user.username,
             'number': request.user.studentinfomodel.number,
             'gender': request.user.studentinfomodel.gender,
             'phone': request.user.studentinfomodel.phone,
         }
-        return render(request, 'registration/profile.html', context=profile)
+        return render(request, 'registration/profile.html', context=user_profile)
     return redirect(add_user)
 
 
