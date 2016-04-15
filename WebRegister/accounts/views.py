@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from django.db.utils import IntegrityError
 
 from .models import StudentInfoModel
@@ -20,6 +21,12 @@ def profile(request):
         }
         return render(request, 'registration/profile.html', context=profile)
     return redirect(add_user)
+
+
+@login_required
+def log_out(request):
+    logout(request)
+    return render(request, 'registration/logout.html')
 
 
 def add_user(request):
