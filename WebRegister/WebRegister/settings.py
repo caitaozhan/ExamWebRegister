@@ -57,9 +57,7 @@ ROOT_URLCONF = 'WebRegister.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/register/templates',
-                 '/accounts/templates',
-                 'WebRegister/templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'WebRegister/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,4 +124,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
 
 
-LOGIN_URL = '/register/login'
+LOGIN_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = '/accounts/profile'

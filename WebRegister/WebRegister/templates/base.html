@@ -37,8 +37,8 @@
             <ul class="nav navbar-nav">
                 <li><a href="#">科目</a></li>
                 <li><a href="#">考试</a></li>
-                <li><a href="/guide">报名</a></li>
-                <li><a href="/accounts/profile">用户</a></li>
+                <li><a href="{% url 'guide' %}">报名</a></li>
+                <li><a href="{% url 'profile' %}">用户</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{% url 'login' %}">登录/注册</a></li>

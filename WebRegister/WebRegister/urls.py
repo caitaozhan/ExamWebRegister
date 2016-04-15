@@ -19,9 +19,9 @@ from django.contrib import admin
 from .views import home, guide
 
 urlpatterns = [
-    url(r'^$', home, name='home_page'),
-    url(r'^home$', home, name='home_page'),
-    url(r'^guide$', guide, name='guide_page'),
+    url(r'^$', home, name='home'),
+    url(r'^home$', home, name='home'),
+    url(r'^guide$', guide, name='guide'),
     url(r'^register/', include('register.urls')),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^admin/', admin.site.urls),

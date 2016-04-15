@@ -30,9 +30,9 @@
 </div>
 
 {# Assumes you setup the password_reset view in your URLconf #}
-<p align="left">
+<p>
     <a href="{% url 'password_reset' %}">密码丢失?</a>
-    <a href="/accounts/signup">需要注册?</a>
+    <a href="{% url 'signup' %}">需要注册?</a>
 </p>
 
 
