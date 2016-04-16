@@ -6,4 +6,8 @@ def home(request):
 
 
 def guide(request):
-    return render(request, 'guide.html')
+    return render(request, 'guide.html', context={
+        # 'autoescape off' needed
+        'indent': '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+        'larger_indent': '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+    })
