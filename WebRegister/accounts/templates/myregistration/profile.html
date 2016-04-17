@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}profile{% endblock %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>您的账号无权访问此页面,请使用其它账号</p>
+    {% else %}
+    <p>访问该页面需要登录</p>
+    {% endif %}
+{% endif %}
+
+{% block content %}
+    <p class="lead">个人信息</p>
+    <div class="form-group">
+        <form method="post" action="{% url 'profile' %}">
+            {% csrf_token %}
+            <table class="table table-hover">
+                <tr>
+                    <th>用户名:</th>
+                    <td>{{ username }}</td>
+                </tr>
+                {{ form.as_table }}
+            </table>
+            <input class="btn btn-default" type="submit" value="保存修改"/>
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </form>
+    </div>
+{% endblock content %}

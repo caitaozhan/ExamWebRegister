@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout, login, authenticate
 from django.db.utils import IntegrityError
-from django.views.decorators.http import require_safe
 
 from .models import Student
-from .forms import UserForm, ProfileForm
+from .forms import SignupForm, ProfileForm, LoginForm
 
 
 # Create your views here.
@@ -17,23 +15,33 @@ def profile(request):
     if request.method == 'POST':
         profile_form = ProfileForm(request.POST)
         if profile_form.is_valid():
-            pass    # Todo: 使profile视图根据表单对数据库进行修改
+            user = User.objects.get(username=request.user.username)
+            user.email = profile_form.cleaned_data['email']
+            user.student.update_profile(profile_form.cleaned_data)
+            user.save()
+            redirect(profile)
     else:
-        profile_dict = {
-            'username': request.user.username,
-            'gender': request.user.student.gender,
-            'phone': request.user.student.phone,
-            'number': request.user.student.number,
-        } # Todo: 使其能够自动根据user,student,...的信息导入数据
-        profile_form = ProfileForm(profile_dict)
-    return render(request, 'profile.html', context={'form': profile_form})
+        user_profile = {
+            'email': request.user.email,
+        }
+        student_profile = request.user.student.profile_data()
+        user_profile.update(student_profile)
+        # 构建表单
+        profile_form = ProfileForm(user_profile)
+    return render(request, 'profile.html', context={
+        'username': request.user.username,  # username 不允许修改, 故特殊处理
+        'form': profile_form
+    })
 
 
 def log_in(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        cached_user_data = {
+            'username': request.POST['username'],
+            'password': request.POST['password'],
+        }
+        user = authenticate(username=cached_user_data['username'],
+                            password=cached_user_data['password'])
         if user is not None:
             if user.is_active:
                 login(request, user)
@@ -41,12 +49,12 @@ def log_in(request):
             else:
                 return render(request, 'base.html', {
                     'title': 'disabled_account',
-                    'content': '<p class="lead">账号不可用</p>'
+                    'content': '<p class="lead">该账号不可用</p>'
                 })
-        form = AuthenticationForm(request.POST)  #该语句似乎无效 #Todo: 使用户验证失败后显示错误信息并保留输入
+        login_form = LoginForm(cached_user_data)
     else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+        login_form = LoginForm()
+    return render(request, 'login.html', {'form': login_form})
 
 
 @login_required
@@ -55,9 +63,9 @@ def log_out(request):
     return render(request, 'logout.html')
 
 
-def add_user(request):
+def sign_up(request):
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
+        user_form = SignupForm(request.POST)
         if user_form.is_valid():
             try:
                 new_user = User.objects.create_user(username=user_form.cleaned_data['username'],
@@ -71,5 +79,5 @@ def add_user(request):
             except IntegrityError as e:
                 pass
     else:
-        user_form = UserForm()
+        user_form = SignupForm()
     return render(request, 'signup.html', {'form': user_form})
