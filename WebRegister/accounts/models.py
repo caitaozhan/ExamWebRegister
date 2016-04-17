@@ -30,20 +30,3 @@ class Student(models.Model):
             'number': self.number,
             'phone': self.phone,
         }
-
-
-# # 附加信息模型
-# class AdditionalInfo(models.Model):
-#     TypeOfValue = (
-#         ('Selection', '选项'),
-#         ('Text', '文本'),
-#         ('Bool', '布尔值'),
-#     )
-#
-#     fieldName = models.CharField(max_length=30)
-#     fieldType = models.CharField(max_length=10, choices=TypeOfValue)
-#
-#
-# # 扩展记录表
-# class ExtendRecord(models.Model):
-#     pass
