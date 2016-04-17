@@ -19,6 +19,7 @@ def profile(request):
             user.email = profile_form.cleaned_data['email']
             user.student.update_profile(profile_form.cleaned_data)
             user.save()
+            user.student.save()
             redirect(profile)
     else:
         user_profile = {

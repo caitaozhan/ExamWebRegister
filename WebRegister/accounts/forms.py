@@ -45,10 +45,10 @@ class ProfileForm(forms.Form):
         ('男', '男'),
         ('女', '女')
     )
-    # username = forms.CharField(label="用户名", max_length=30,
-    #                            widget=forms.TextInput(attrs=customize_attrs))
+    # username 不允许编辑, 不包含在表单中
     email = forms.EmailField(label="邮箱",
-                             widget=forms.TextInput(attrs=customize_attrs))
+                             widget=forms.TextInput(attrs=customize_attrs),
+                             required=False)
     gender = forms.CharField(label="性别", max_length=6,
                              widget=forms.Select(choices=GENDER_TYPE,
                                                  attrs=customize_attrs))
