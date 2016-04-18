@@ -5,7 +5,6 @@ from register.models import ExamInfoModel
 
 # Create your models here.
 # Todo: 为用户添加 "扩展记录", "附加信息". 使其能够动态的添加新的字段
-# Todo: 取消number(学号)属性
 
 class Student(models.Model):
     GENDER_TYPE = (
@@ -14,7 +13,7 @@ class Student(models.Model):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)  # 设为主码
-    number = models.CharField(max_length=30, unique=True)
+    id_number = models.CharField(max_length=30, unique=True)                       # 身份证号
     gender = models.CharField(max_length=6, choices=GENDER_TYPE)
     phone = models.CharField(max_length=20)
     exam = models.ManyToManyField(ExamInfoModel,
