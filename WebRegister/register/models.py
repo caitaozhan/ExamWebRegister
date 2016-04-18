@@ -1,7 +1,5 @@
 from django.db import models
 from django.utils import timezone
-# from accounts.models import Student
-
 
 class ExamInfoModel(models.Model):
     subject = models.CharField(max_length=30)   # 科目名称
