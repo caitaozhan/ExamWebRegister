@@ -3,14 +3,14 @@ from django.test import TestCase
 signup_form_data = {
     'username': '王老菊',
     'password': '1234',
-    'number': '20131001111',
-    'gender': 'Male',
+    'id_number': '342201199201034758',
+    'gender': '男',
     'phone': '15822223333',
 }
 
 login_form_data = {
-    'username': '王老菊',
-    'password': '1234',
+    'username': signup_form_data['username'],
+    'password': signup_form_data['password'],
 }
 
 LoginURL = '/accounts/login'
@@ -73,6 +73,6 @@ class TestProfileView(TestCase):
         response = self.client.get(ProfileURL)
         response_is_html(response, title='profile')
         for value in (signup_form_data['username'],
-                      signup_form_data['number'],
+                      signup_form_data['id_number'],
                       signup_form_data['phone']):
             self.assertContains(response, value)
