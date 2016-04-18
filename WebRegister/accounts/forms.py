@@ -20,6 +20,7 @@ class LoginForm(AuthenticationForm):
 
 # 用户注册表单
 # 仅包含注册时必须填写的信息
+# todo: username 已经注册过，重复注册失败，但是没有提示信息：“该用户名已经注册”
 class SignupForm(forms.Form):
     GENDER_TYPE = (
         ('Male', '男'),
@@ -29,7 +30,7 @@ class SignupForm(forms.Form):
                                widget=forms.TextInput(attrs=customize_attrs))
     password = forms.CharField(label="密码", max_length=30,
                                widget=forms.PasswordInput(attrs=customize_attrs))
-    number = forms.CharField(label="学号", max_length=30,
+    id_number = forms.CharField(label="身份证号", max_length=30,
                              widget=forms.TextInput(attrs=customize_attrs))
     gender = forms.CharField(label="性别", max_length=6,
                              widget=forms.Select(attrs=customize_attrs,
@@ -54,5 +55,5 @@ class ProfileForm(forms.Form):
                                                  attrs=customize_attrs))
     phone = forms.CharField(label="手机号", max_length=20,
                             widget=forms.TextInput(attrs=customize_attrs))
-    number = forms.CharField(label="学号", max_length=30,
+    id_number = forms.CharField(label="身份证号", max_length=30,
                              widget=forms.TextInput(attrs=customize_attrs))

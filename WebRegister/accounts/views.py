@@ -72,7 +72,7 @@ def sign_up(request):
                 new_user = User.objects.create_user(username=user_form.cleaned_data['username'],
                                                     password=user_form.cleaned_data['password'])
                 new_student = Student(user=new_user,
-                                      number=user_form.cleaned_data['number'],
+                                      id_number=user_form.cleaned_data['id_number'],
                                       gender=user_form.cleaned_data['gender'],
                                       phone=user_form.cleaned_data['phone'])
                 new_student.save()

@@ -24,14 +24,14 @@ class Student(models.Model):
         return self.user.username  # 返回名字
 
     def update_profile(self, new_profile):
-        self.number = new_profile['number']
+        self.id_number = new_profile['id_number']
         self.gender = new_profile['gender']
         self.phone = new_profile['phone']
 
     def profile_data(self):
         return {
             'gender': self.gender,
-            'number': self.number,
+            'number': self.id_number,
             'phone': self.phone,
         }
 
