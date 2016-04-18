@@ -76,3 +76,15 @@ class TestProfileView(TestCase):
                       signup_form_data['id_number'],
                       signup_form_data['phone']):
             self.assertContains(response, value)
+
+    def test_user_can_edit_profile_and_save_changes(self):
+        self.create_user()
+        self.login()
+        new_profile = signup_form_data
+        new_profile['gender'] = '女'
+        new_profile['id_number'] = '342201190000000000'
+        new_profile['email'] = 'wanglaoju@mail.com'
+        response = self.client.post(ProfileURL, data=new_profile, follow=True)
+        self.assertContains(response, new_profile['gender'])
+        self.assertContains(response, new_profile['id_number'])
+        self.assertContains(response, new_profile['email'])
