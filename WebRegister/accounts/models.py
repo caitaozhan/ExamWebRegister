@@ -24,12 +24,23 @@ class Student(models.Model):
         return self.user.username  # 返回名字
 
     def update_profile(self, new_profile):
+        """
+        更新 Student 数据库的信息 (不应出现不希望用户更改的数据)
+        :param new_profile:
+        :return None:
+        """
         self.id_number = new_profile['id_number']
         self.gender = new_profile['gender']
         self.phone = new_profile['phone']
 
     def profile_data(self):
+        """
+        获取用户的 profile (应包含所有的希望显示在 profile 页面的个人信息)
+        :return profile_data:
+        """
         return {
+            'username': self.user.username,
+            'email': self.user.email,
             'id_number': self.id_number,
             'gender': self.gender,
             'phone': self.phone,
