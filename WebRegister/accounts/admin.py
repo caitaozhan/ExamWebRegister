@@ -22,3 +22,8 @@
 # # 重注册 UserAdmin
 # admin.site.unregister(User)
 # admin.site.register(User, UserAdmin)
+
+from django.contrib import admin
+from .models import RegistrationInfoModel
+
+admin.site.register(RegistrationInfoModel)
