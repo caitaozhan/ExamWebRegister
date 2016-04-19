@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
 
 signup_form_data = {
     'username': '王老菊',
@@ -26,8 +27,14 @@ def response_is_html(response, title=None):
     test.assertTrue(response.content.endswith(b'</html>'))
 
 
+def create_a_superuser():
+    User.objects.create_superuser(username=login_form_data['username'],
+                                  password=login_form_data['password'],
+                                  email="")
+
+
 class TestLoginView(TestCase):
-    def create_user(self):
+    def create_a_user(self):
         self.client.post(SignupURL, data=signup_form_data)
 
     def test_can_return_login_page(self):
@@ -35,7 +42,7 @@ class TestLoginView(TestCase):
         response_is_html(response, title='login')
 
     def test_can_redirect_to_profile_page_when_succeed(self):
-        self.create_user()
+        self.create_a_user()
         response = self.client.post(LoginURL, data=login_form_data)
         self.assertRedirects(response, ProfileURL)
 
@@ -57,7 +64,7 @@ class TestSignupView(TestCase):
 
 
 class TestProfileView(TestCase):
-    def create_user(self):
+    def create_a_user(self):
         self.client.post(SignupURL, data=signup_form_data)
 
     def login(self):
@@ -68,7 +75,7 @@ class TestProfileView(TestCase):
         self.assertRedirects(response, LoginURL + '?next=/accounts/profile')
 
     def test_can_return_profile_page_with_authorization(self):
-        self.create_user()
+        self.create_a_user()
         self.login()
         response = self.client.get(ProfileURL)
         response_is_html(response, title='profile')
@@ -77,8 +84,14 @@ class TestProfileView(TestCase):
                       signup_form_data['phone']):
             self.assertContains(response, value)
 
+    def test_will_redirect_to_admin_page_when_superuser(self):
+        create_a_superuser()
+        self.login()
+        response = self.client.get(ProfileURL, follow=True)  # get 方法需要设置 follow=True
+        self.assertRedirects(response, '/admin/')
+
     def test_user_can_edit_profile_and_save_changes(self):
-        self.create_user()
+        self.create_a_user()
         self.login()
         new_profile = signup_form_data
         new_profile['gender'] = '女'
