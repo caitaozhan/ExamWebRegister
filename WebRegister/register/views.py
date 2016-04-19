@@ -13,7 +13,7 @@ from django.http import HttpResponse
 def index(request):
     return HttpResponse("考试注册")
 
-
+"""
 def add_exam(request):
     if request.method == 'POST':
         form = ExamForm(request.POST)
@@ -27,3 +27,4 @@ def add_exam(request):
     else:
         form = ExamForm()
     return render(request, 'add_exam.html', {'form': form})
+"""
