@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^guide$', guide, name='guide'),
     url(r'^register/', include('register.urls')),
     url(r'^accounts/', include('accounts.urls')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls, name='admin'),
 ]

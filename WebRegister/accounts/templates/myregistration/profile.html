@@ -26,4 +26,7 @@
             <input type="hidden" name="next" value="{{ next }}"/>
         </form>
     </div>
+    {% if user.is_superuser %}
+    <p><a href="/admin">跳转到管理页面</a></p>
+    {% endif %}
 {% endblock content %}

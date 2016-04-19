@@ -32,6 +32,7 @@ class Student(models.Model):
         self.id_number = new_profile['id_number']
         self.gender = new_profile['gender']
         self.phone = new_profile['phone']
+        self.save()  # 保存数据
 
     def profile_data(self):
         """

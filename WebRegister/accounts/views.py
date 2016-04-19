@@ -17,20 +17,24 @@ def profile(request):
         if profile_form.is_valid():
             user = User.objects.get(username=request.user.username)
             user.email = profile_form.cleaned_data['email']
-            user.student.update_profile(profile_form.cleaned_data)
             user.save()
-            user.student.save()
+            if hasattr(user, 'student'):
+                user.student.update_profile(profile_form.cleaned_data)
             return redirect(profile)
-    else:
+    else:  # request.POST == 'GET
+        user = User.objects.get(username=request.user.username)
+        if user.is_superuser:
+            return redirect('/admin')
         user_profile = {
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
             'email': request.user.email,
         }
-        student_profile = request.user.student.profile_data()
-        user_profile.update(student_profile)
-        # 构建表单
+        if hasattr(user, 'student'):
+            user_profile.update(user.student.profile_data())
         profile_form = ProfileForm(user_profile)
     return render(request, 'profile.html', context={
-        'username': request.user.username,  # username 不允许修改, 故特殊处理
+        'username': request.user.username,  # username 不允许修改, 故不在表单中
         'form': profile_form
     })
 
