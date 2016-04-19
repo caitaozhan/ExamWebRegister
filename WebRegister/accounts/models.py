@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from register.models import ExamInfoModel
+from register.models import ExamInfoModel, PlaceModel
 
 GENDER_TYPE = (
     ('男', '男'),
@@ -56,6 +56,7 @@ class RegistrationInfoModel(models.Model):
     exam = models.ForeignKey(ExamInfoModel, on_delete=models.CASCADE)  # 外码
     exam_number = models.CharField(max_length=30)  # 准考证号
     is_paid = models.BooleanField(default=False)  # 是否缴费
+    place = models.OneToOneField(PlaceModel, on_delete=models.CASCADE, default="25#324")  # 弄一个下拉框，选择一个地点
 
     def __str__(self):
         return self.subject + ':' + self.exam_number
