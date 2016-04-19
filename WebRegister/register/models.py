@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-# from accounts.models import Student
 
 
 class ExamInfoModel(models.Model):

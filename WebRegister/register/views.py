@@ -1,6 +1,4 @@
 from django.shortcuts import render
-from django.contrib.auth import login, logout, authenticate
-
 
 from .forms import ExamForm
 from .models import ExamInfoModel

@@ -5,4 +5,3 @@ from .models import ExamInfoModel  # , RegistrationInfoModel
 # Register your models here.
 
 admin.site.register(ExamInfoModel)
-# admin.site.register(RegistrationInfoModel)

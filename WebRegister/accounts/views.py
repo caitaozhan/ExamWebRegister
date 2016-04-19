@@ -20,7 +20,7 @@ def profile(request):
             user.student.update_profile(profile_form.cleaned_data)
             user.save()
             user.student.save()
-            redirect(profile)
+            return redirect(profile)
     else:
         user_profile = {
             'email': request.user.email,
@@ -76,8 +76,8 @@ def sign_up(request):
                                       gender=user_form.cleaned_data['gender'],
                                       phone=user_form.cleaned_data['phone'])
                 new_student.save()
-                return redirect(profile)
-            except IntegrityError as e:
+                return redirect(log_in)
+            except IntegrityError:
                 pass
     else:
         user_form = SignupForm()
