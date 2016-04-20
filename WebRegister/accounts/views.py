@@ -25,16 +25,16 @@ def profile(request):
         user = User.objects.get(username=request.user.username)
         if user.is_superuser:
             return redirect('/admin')
-        user_profile = {
+        user_profile = {  # 从数据库获取基本用户信息
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
             'email': request.user.email,
         }
         if hasattr(user, 'student'):
-            user_profile.update(user.student.profile_data())
+            user_profile.update(user.student.profile_data())  # 从数据库获取用户的学生信息
         profile_form = ProfileForm(user_profile, auto_id=False)
     return render(request, 'profile.html', context={
-        'username': request.user.username,  # username 不允许修改, 故不在表单中
+        'username': request.user.username,  # username 不允许修改,分开表示
         'form': profile_form
     })
 
@@ -52,7 +52,7 @@ def log_in(request):
                 login(request, user)
                 return redirect(profile)
             else:
-                return render(request, 'base.html', {
+                return render(request, 'base.html', context={
                     'title': 'disabled_account',
                     'content': '<p class="lead">该账号不可用</p>'
                 })

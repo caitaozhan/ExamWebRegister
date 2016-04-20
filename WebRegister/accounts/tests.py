@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 signup_form_data = {
     'username': '王老菊',
@@ -14,9 +15,9 @@ login_form_data = {
     'password': signup_form_data['password'],
 }
 
-LoginURL = '/accounts/login'
-SignupURL = '/accounts/signup'
-ProfileURL = '/accounts/profile'
+LoginURL = reverse('login')
+SignupURL = reverse('signup')
+ProfileURL = reverse('profile')
 
 
 def response_is_html(response, title=None):

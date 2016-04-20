@@ -1,12 +1,10 @@
 from django import forms
 
+from .models import ExamInfoModel
 
-class ExamForm(forms.Form):
-    subject = forms.CharField(label="课程", max_length=30,
-                              widget=forms.TextInput(attrs={'class': 'form-control'}))
-    time = forms.DateTimeField(label="考试时间",
-                               widget=forms.DateTimeInput(attrs={'class': 'form-control'}))
-    # place = forms.CharField(label="考试地点", max_length=50,
-                           # widget=forms.TextInput(attrs={'class': 'form-control'}))
-    fee = forms.IntegerField(label="报考费用",
-                             widget=forms.NumberInput(attrs={'class': 'form-control'}))
+EXAMS = ((exam.subject, exam.subject) for exam in ExamInfoModel.objects.all())
+
+
+class ExaminationSelectForm(forms.Form):
+    examination = forms.CharField(label="考试", max_length=30,
+                                  widget=forms.Select(choices=EXAMS, attrs={'class': 'form-control'}))

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}select_for_examination{% endblock %}
+
+{% block content %}
+    <p class="lead">请选择考试项目</p>
+    <div class="form-group">
+        <form action="{% url 'select_for_place' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input class="btn btn-default" style="margin-top: 1pc" type="submit" value="确定" name="submit"/>
+        </form>
+    </div>
+{% endblock content %}
