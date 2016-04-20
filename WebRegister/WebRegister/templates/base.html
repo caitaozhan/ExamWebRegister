@@ -7,6 +7,7 @@
     <title>{% block title %}title{% endblock %}</title>
     {% load staticfiles %}
     <link rel="stylesheet" media="screen" href="/static/bootstrap/css/bootstrap.min.css">
+    {% block headItems %}{% endblock %}
     <style>
         body {
             padding-top: 50px;
@@ -17,9 +18,9 @@
         }
     </style>
 </head>
+
 <body>
-
-
+{% block navBar %}
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -35,7 +36,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">考试介绍</a></li>
+                <li><a href="{% url 'examinations' %}">考试介绍</a></li>
                 <li><a href="#">网上报名</a></li>
                 <li><a href="{% url 'guide' %}">报名流程</a></li>
             </ul>
@@ -48,11 +49,13 @@
                 {% endif %}
             </ul>
         </div><!--/.nav-collapse -->
-
     </div>
 </nav>
+{% endblock navBar %}
 
+{% block beforeContanier %}{% endblock %}
 <div class="container">
+    {% block beforeContent %}{% endblock %}
     <div class="content">
         {% block content %}
             <h1>网上考试报名系统</h1>
@@ -62,12 +65,15 @@
             <h4><a href="#">余宗福</a></h4>
         {% endblock content %}
     </div>
+    {% block afterContent %}{% endblock %}
 </div>
+{% block afterContanier %}{% endblock %}
 
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

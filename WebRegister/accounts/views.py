@@ -13,7 +13,7 @@ from .forms import SignupForm, ProfileForm, LoginForm
 @login_required
 def profile(request):
     if request.method == 'POST':
-        profile_form = ProfileForm(request.POST)
+        profile_form = ProfileForm(request.POST, auto_id=False)
         if profile_form.is_valid():
             user = User.objects.get(username=request.user.username)
             user.email = profile_form.cleaned_data['email']
@@ -32,7 +32,7 @@ def profile(request):
         }
         if hasattr(user, 'student'):
             user_profile.update(user.student.profile_data())
-        profile_form = ProfileForm(user_profile)
+        profile_form = ProfileForm(user_profile, auto_id=False)
     return render(request, 'profile.html', context={
         'username': request.user.username,  # username 不允许修改, 故不在表单中
         'form': profile_form
@@ -59,7 +59,10 @@ def log_in(request):
         login_form = LoginForm(cached_user_data)
     else:
         login_form = LoginForm()
-    return render(request, 'login.html', {'form': login_form})
+    return render(request, 'login.html', {
+        'username': login_form['username'],
+        'password': login_form['password'],
+    })
 
 
 @login_required

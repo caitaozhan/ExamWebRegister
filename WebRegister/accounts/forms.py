@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.template.defaultfilters import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 # 自定义表单控件的属性
@@ -17,10 +18,19 @@ GENDER_TYPE = (
 # 仅包含用户名和密码
 class LoginForm(AuthenticationForm):
     # 相对于原声的 AuthenticationForm 表单, 定制了 widget 的样式
-    username = forms.CharField(max_length=254,
-                               widget=forms.TextInput(attrs=customize_attrs))
-    password = forms.CharField(label=_("Password"), strip=False,
-                               widget=forms.PasswordInput(attrs=customize_attrs))
+    username = forms.CharField(max_length=254, required=True,
+                               widget=forms.TextInput(attrs={
+                                   'class': 'form-control',
+                                   'id': 'inputtext',
+                                   'placeholder': '用户名',
+                                   'autofocus': '',
+                               }))
+    password = forms.CharField(label=_("Password"), required=True,
+                               widget=forms.PasswordInput(attrs={
+                                   'class': 'form-control',
+                                   'id': 'inputpassword',
+                                   'placeholder': '密码',
+                               }))
 
 
 # 用户注册表单

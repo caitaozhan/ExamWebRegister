@@ -2,6 +2,57 @@
 
 {% block title %}login{% endblock %}
 
+{% block headItems %}
+    <style>
+        body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #eee;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+
+        .form-signin .form-signin-heading,
+        .form-signin .checkbox {
+            margin-bottom: 10px;
+        }
+
+        .form-signin .checkbox {
+            font-weight: normal;
+        }
+
+        .form-signin .form-control {
+            position: relative;
+            height: auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 
     {% if form.errors %}
@@ -19,24 +70,17 @@
         {% endif %}
     {% endif %}
 
-
-    <p class="lead">用户登录</p>
-    <div class="form-group">
+    <div class="form-signin">
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <table class="table table-hover">
-                {{ form.as_table }}
-            </table>
-            <input class="btn btn-default" type="submit" value="登录"/>
+            <h2 class="form-signin-heading">登录</h2>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            {{ username }}
+            <label for="inputPassword" class="sr-only">Password</label>
+            {{ password }}
+            <input class="btn btn-lg btn-primary btn-block" type="submit" value="登录"/>
             <input type="hidden" name="next" value="{{ next }}"/>
         </form>
     </div>
-
-    {# Assumes you setup the password_reset view in your URLconf #}
-    <p>
-        {#    <a href="{% url 'password_reset' %}">密码丢失?</a>#}
-        <a href="{% url 'signup' %}">需要注册?</a>
-    </p>
-
-
+    <p><a href="{% url 'signup' %}">需要注册?</a></p>
 {% endblock content %}

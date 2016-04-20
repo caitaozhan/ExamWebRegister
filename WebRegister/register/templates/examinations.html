@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}examinations{% endblock %}
+
+
+{% block content %}
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-9">
+            <p class="pull-right visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            </p>
+            <div class="jumbotron">
+                <h1>考试报名入口</h1>
+                <p>以下为所有能够可供报名的考试</p>
+            </div>
+            <div class="row">
+                {% for exam in exams %}
+                    <div class="col-xs-6 col-lg-4">
+                    <h3>{{ exam.subject }}</h3>
+                    <p>{{ exam.notes }}</p>
+                </div><!--/.col-xs-6.col-lg-4-->
+                {% endfor %}
+            </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+            <div class="list-group">
+                <a href="#" class="list-group-item active">Link</a>
+                <a href="#" class="list-group-item">Link</a>
+                <a href="#" class="list-group-item">Link</a>
+                <a href="#" class="list-group-item">Link</a>
+                <a href="#" class="list-group-item">Link</a>
+                <a href="#" class="list-group-item">Link</a>
+                <a href="#" class="list-group-item">Link</a>
+                <a href="#" class="list-group-item">Link</a>
+                <a href="#" class="list-group-item">Link</a>
+                <a href="#" class="list-group-item">Link</a>
+            </div>
+        </div><!--/.sidebar-offcanvas-->
+    </div>
+{% endblock content %}
