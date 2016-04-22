@@ -39,7 +39,8 @@ def profile(request):
                 stu.gender = profile_form.cleaned_data['gender']
                 stu.phone = profile_form.cleaned_data['phone']
                 path = os.path.join(BASE_DIR, str(stu.head_image))
-                os.remove(path)                                           # 删除原来的头像
+                if os.path.isfile(path) and str(stu.head_image) != 'accounts/headImageFolder/fuckFu.jpg':
+                    os.remove(path)                                       # 删除原来的头像，不能删除 fuckFu.jpg
                 stu.head_image = profile_form.cleaned_data['head_image']
                 stu.save()                                                # 保存新的头像
                 path = os.path.join(BASE_DIR, str(stu.head_image))
