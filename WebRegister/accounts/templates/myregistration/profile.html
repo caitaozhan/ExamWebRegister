@@ -4,9 +4,9 @@
 
 {% if next %}
     {% if user.is_authenticated %}
-    <p>您的账号无权访问此页面,请使用其它账号</p>
+        <p>您的账号无权访问此页面,请使用其它账号</p>
     {% else %}
-    <p>访问该页面需要登录</p>
+        <p>访问该页面需要登录</p>
     {% endif %}
 {% endif %}
 
@@ -20,13 +20,42 @@
                     <th>用户名:</th>
                     <td>{{ username }}</td>
                 </tr>
-                {{ form.as_table }}
+                <tr>
+                    <th>邮箱:</th>
+                    <td>{{ email }}</td>
+                </tr>
+                <tr>
+                    <th>性别:</th>
+                    <td>{{ gender }}</td>
+                </tr>
+                <tr>
+                    <th>手机号:</th>
+                    <td>{{ phone }}</td>
+                </tr>
+                <tr>
+                    <th>身份证号:</th>
+                    <td>{{ id_number }}</td>
+                </tr>
+                <tr>
+                    <th>头像:</th>
+                    <td>
+                        <img src="/media/{{ head_image_file }}" align="left"
+                             class="img-thumbnail" alt="210x150"
+                             data-holder-rendered="true" style="width: 150px; height: 210px;">
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        {{ head_image }}
+                    </td>
+                </tr>
             </table>
             <input class="btn btn-default" type="submit" value="保存修改"/>
             <input type="hidden" name="next" value="{{ next }}"/>
         </form>
     </div>
     {% if user.is_superuser %}
-    <p><a href="/admin">跳转到管理页面</a></p>
+        <p><a href="/admin">跳转到管理页面</a></p>
     {% endif %}
 {% endblock content %}

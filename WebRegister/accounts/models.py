@@ -1,11 +1,28 @@
+import os
+
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 from register.models import ExamInfoModel, PlaceModel
 
 GENDER_TYPE = (
     ('男', '男'),
     ('女', '女')
 )
+
+# IMAGE_DIR = os.path.join(settings.MEDIA_ROOT, 'images')
+
+
+# 缩略图：宽度最大150， 长度最大210
+def thumbnail_image(path):
+    from PIL import Image
+    size = (150, 210)
+    try:
+        im = Image.open(path)
+        im.thumbnail(size)
+        im.save(path, "JPEG")
+    except IOError:
+        print("cannot not create thumbnail")
 
 
 # Create your models here.
@@ -16,8 +33,8 @@ class Student(models.Model):
     id_number = models.CharField(max_length=30, unique=True)  # 身份证号
     gender = models.CharField(max_length=6, choices=GENDER_TYPE)
     phone = models.CharField(max_length=20)
-    head_image = models.ImageField(upload_to='accounts/headImageFolder/',
-                                   default='accounts/headImageFolder/fuckFu.jpg')
+    head_image = models.ImageField(upload_to='images/',
+                                   default='images/fuckFu.jpg')
     exam = models.ManyToManyField(ExamInfoModel,
                                   through="RegistrationInfoModel",  # 表 RegistrationInfoModel 表示多对多关系
                                   through_fields=('student', 'exam'))
@@ -34,6 +51,13 @@ class Student(models.Model):
         self.id_number = new_profile['id_number']
         self.gender = new_profile['gender']
         self.phone = new_profile['phone']
+        # Todo: 在对图像进行操作之前, 首先进行验证
+        old_head_image_path = os.path.join(settings.MEDIA_ROOT, str(self.head_image))
+        if os.path.isfile(old_head_image_path) and str() != 'images/fuckFu.jpg':
+            os.remove(old_head_image_path)  # 删除原来的头像, 不能删除 fuckFu.jpg
+        self.head_image = new_profile['head_image']
+        new_head_image_path = os.path.join(settings.MEDIA_ROOT, str(self.head_image))
+        thumbnail_image(new_head_image_path)  # 对头像进行缩略功能
         self.save()  # 保存数据
 
     def profile_data(self):
@@ -47,6 +71,7 @@ class Student(models.Model):
             'id_number': self.id_number,
             'gender': self.gender,
             'phone': self.phone,
+            'head_image': self.head_image,
         }
 
 

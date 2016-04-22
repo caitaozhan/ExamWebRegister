@@ -8,21 +8,12 @@ from django.db.utils import IntegrityError
 from .models import Student
 from .forms import SignupForm, ProfileForm, LoginForm
 
-from PIL import Image  # Python Image Library
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 # Create your views here.
-
-
-# 缩略图：宽度最大150， 长度最大210
-def thumbnail_image(path):
-    size = (150, 210)
-    try:
-        im = Image.open(path)
-        im.thumbnail(size)
-        im.save(path, "JPEG")
-    except IOError:
-        print("cannot not create thumbnail")
 
 
 @login_required
@@ -34,35 +25,31 @@ def profile(request):
             user.email = profile_form.cleaned_data['email']
             user.save()
             if hasattr(user, 'student'):
-                stu = user.student
-                stu.id_number = profile_form.cleaned_data['id_number']
-                stu.gender = profile_form.cleaned_data['gender']
-                stu.phone = profile_form.cleaned_data['phone']
-                path = os.path.join(BASE_DIR, str(stu.head_image))
-                if os.path.isfile(path) and str(stu.head_image) != 'accounts/headImageFolder/fuckFu.jpg':
-                    os.remove(path)                                       # 删除原来的头像，不能删除 fuckFu.jpg
-                stu.head_image = profile_form.cleaned_data['head_image']
-                stu.save()                                                # 保存新的头像
-                path = os.path.join(BASE_DIR, str(stu.head_image))
-                thumbnail_image(path)                                     # 对头像进行缩略功能
+                user.student.update_profile(profile_form.cleaned_data)
             return redirect(profile)
         else:
-            return HttpResponse("profile form is not valid")              # 如果表单里面不填写头像，则表单not valid
+            return HttpResponse("profile form is not valid")  # 如果表单里面不填写头像，则表单not valid
     else:  # request.POST == 'GET
         user = User.objects.get(username=request.user.username)
         if user.is_superuser:
             return redirect('/admin')
-        user_profile = {  # 从数据库获取基本用户信息
+        user_profile = {  # 获取基本用户信息
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
             'email': request.user.email,
         }
         if hasattr(user, 'student'):
-            user_profile.update(user.student.profile_data())  # 从数据库获取用户的学生信息
+            user_profile.update(user.student.profile_data())  # 获取用户的学生信息
         profile_form = ProfileForm(user_profile, auto_id=False)
     return render(request, 'profile.html', context={
-        'username': request.user.username,  # username 不允许修改,分开表示
-        'form': profile_form
+        # 'method': request.method,  # 根据 method 渲染模版
+        'username': request.user.username,
+        'email': profile_form['email'],
+        'gender': profile_form['gender'],
+        'phone': profile_form['phone'],
+        'id_number': profile_form['id_number'],
+        'head_image': profile_form['head_image'],
+        'head_image_file': user_profile['head_image'],
     })
 
 
