@@ -16,6 +16,8 @@ class Student(models.Model):
     id_number = models.CharField(max_length=30, unique=True)  # 身份证号
     gender = models.CharField(max_length=6, choices=GENDER_TYPE)
     phone = models.CharField(max_length=20)
+    head_image = models.ImageField(upload_to='accounts/headImageFolder/',
+                                   default='accounts/headImageFolder/fuckFu.jpg')
     exam = models.ManyToManyField(ExamInfoModel,
                                   through="RegistrationInfoModel",  # 表 RegistrationInfoModel 表示多对多关系
                                   through_fields=('student', 'exam'))
