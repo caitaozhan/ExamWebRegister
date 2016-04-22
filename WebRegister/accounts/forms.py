@@ -64,3 +64,4 @@ class ProfileForm(forms.Form):
                             widget=forms.TextInput(attrs=customize_attrs))
     id_number = forms.CharField(label="身份证号", max_length=30,
                                 widget=forms.TextInput(attrs=customize_attrs))
+    head_image = forms.ImageField(label="头像")

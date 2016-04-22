@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
@@ -7,20 +8,43 @@ from django.db.utils import IntegrityError
 from .models import Student
 from .forms import SignupForm, ProfileForm, LoginForm
 
-
+from PIL import Image  # Python Image Library
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Create your views here.
+
+
+# 缩略图：宽度最大150， 长度最大210
+def thumbnail_image(path):
+    size = (150, 210)
+    try:
+        im = Image.open(path)
+        im.thumbnail(size)
+        im.save(path, "JPEG")
+    except IOError:
+        print("cannot not create thumbnail")
+
 
 @login_required
 def profile(request):
     if request.method == 'POST':
-        profile_form = ProfileForm(request.POST, auto_id=False)
+        profile_form = ProfileForm(request.POST, request.FILES)
         if profile_form.is_valid():
             user = User.objects.get(username=request.user.username)
             user.email = profile_form.cleaned_data['email']
             user.save()
             if hasattr(user, 'student'):
-                user.student.update_profile(profile_form.cleaned_data)
+                stu = user.student
+                stu.id_number = profile_form.cleaned_data['id_number']
+                stu.gender = profile_form.cleaned_data['gender']
+                stu.phone = profile_form.cleaned_data['phone']
+                stu.head_image = profile_form.cleaned_data['head_image']
+                stu.save()
+                path = os.path.join(BASE_DIR, str(stu.head_image))
+                thumbnail_image(path)
             return redirect(profile)
+        else:
+            return HttpResponse("profile form is not valid")
     else:  # request.POST == 'GET
         user = User.objects.get(username=request.user.username)
         if user.is_superuser:
