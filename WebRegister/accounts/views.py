@@ -38,13 +38,15 @@ def profile(request):
                 stu.id_number = profile_form.cleaned_data['id_number']
                 stu.gender = profile_form.cleaned_data['gender']
                 stu.phone = profile_form.cleaned_data['phone']
-                stu.head_image = profile_form.cleaned_data['head_image']
-                stu.save()
                 path = os.path.join(BASE_DIR, str(stu.head_image))
-                thumbnail_image(path)
+                os.remove(path)                                           # 删除原来的头像
+                stu.head_image = profile_form.cleaned_data['head_image']
+                stu.save()                                                # 保存新的头像
+                path = os.path.join(BASE_DIR, str(stu.head_image))
+                thumbnail_image(path)                                     # 对头像进行缩略功能
             return redirect(profile)
         else:
-            return HttpResponse("profile form is not valid")
+            return HttpResponse("profile form is not valid")              # 如果表单里面不填写头像，则表单not valid
     else:  # request.POST == 'GET
         user = User.objects.get(username=request.user.username)
         if user.is_superuser:
