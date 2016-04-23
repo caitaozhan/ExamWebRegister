@@ -22,34 +22,36 @@
                 </tr>
                 <tr>
                     <th>邮箱:</th>
-                    <td>{{ email }}</td>
+                    <td>{{ form.email }}</td>
                 </tr>
                 <tr>
                     <th>性别:</th>
-                    <td>{{ gender }}</td>
+                    <td>{{ form.gender }}</td>
                 </tr>
                 <tr>
                     <th>手机号:</th>
-                    <td>{{ phone }}</td>
+                    <td>{{ form.phone }}</td>
                 </tr>
                 <tr>
                     <th>身份证号:</th>
-                    <td>{{ id_number }}</td>
+                    <td>{{ form.id_number }}</td>
                 </tr>
                 <tr>
                     <th>头像:</th>
+                    <td>
+                        {{ form.head_image }}
+                    </td>
+                </tr>
+                {% if head_image_file %}
+                <tr>
+                    <th></th>
                     <td>
                         <img src="/media/{{ head_image_file }}" align="left"
                              class="img-thumbnail" alt="210x150"
                              data-holder-rendered="true" style="width: 150px; height: 210px;">
                     </td>
                 </tr>
-                <tr>
-                    <th></th>
-                    <td>
-                        {{ head_image }}
-                    </td>
-                </tr>
+                {% endif %}
             </table>
             <input class="btn btn-default" type="submit" value="保存修改"/>
             <input type="hidden" name="next" value="{{ next }}"/>

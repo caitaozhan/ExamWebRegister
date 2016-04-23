@@ -8,10 +8,6 @@ from django.db.utils import IntegrityError
 from .models import Student
 from .forms import SignupForm, ProfileForm, LoginForm
 
-import os
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Create your views here.
 
@@ -42,14 +38,10 @@ def profile(request):
             user_profile.update(user.student.profile_data())  # 获取用户的学生信息
         profile_form = ProfileForm(user_profile, auto_id=False)
     return render(request, 'profile.html', context={
-        # 'method': request.method,  # 根据 method 渲染模版
         'username': request.user.username,
-        'email': profile_form['email'],
-        'gender': profile_form['gender'],
-        'phone': profile_form['phone'],
-        'id_number': profile_form['id_number'],
-        'head_image': profile_form['head_image'],
-        'head_image_file': user_profile['head_image'],
+        'form': profile_form,
+        'head_image_file':
+            user_profile['head_image'] if 'head_image' in user_profile else '',  # 指定头像文件的位置
     })
 
 
@@ -97,7 +89,7 @@ def sign_up(request):
                                       gender=user_form.cleaned_data['gender'],
                                       phone=user_form.cleaned_data['phone'])
                 new_student.save()
-                return redirect(log_in)
+                return redirect(log_in)  # Todo: 存在新用户学生信息无法保存的 bug ?
             except IntegrityError:
                 pass
     else:

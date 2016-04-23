@@ -51,13 +51,14 @@ class Student(models.Model):
         self.id_number = new_profile['id_number']
         self.gender = new_profile['gender']
         self.phone = new_profile['phone']
-        # Todo: 在对图像进行操作之前, 首先进行验证
-        old_head_image_path = os.path.join(settings.MEDIA_ROOT, str(self.head_image))
-        if os.path.isfile(old_head_image_path) and str() != 'images/fuckFu.jpg':
-            os.remove(old_head_image_path)  # 删除原来的头像, 不能删除 fuckFu.jpg
-        self.head_image = new_profile['head_image']
-        new_head_image_path = os.path.join(settings.MEDIA_ROOT, str(self.head_image))
-        thumbnail_image(new_head_image_path)  # 对头像进行缩略功能
+        if 'head_image' in new_profile and new_profile['head_image']:
+            # Todo: 在对图像进行操作之前, 首先进行验证
+            old_head_image_path = os.path.join(settings.MEDIA_ROOT, str(self.head_image))
+            if os.path.isfile(old_head_image_path) and str() != 'images/fuckFu.jpg':
+                os.remove(old_head_image_path)  # 删除原来的头像, 不能删除 fuckFu.jpg
+            self.head_image = new_profile['head_image']
+            new_head_image_path = os.path.join(settings.MEDIA_ROOT, str(self.head_image))
+            thumbnail_image(new_head_image_path)  # 对头像进行缩略功能
         self.save()  # 保存数据
 
     def profile_data(self):

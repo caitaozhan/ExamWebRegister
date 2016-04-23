@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}select_for_place{% endblock %}
+
+{% block content %}
+    <p class="lead">请选择考试地点({{ examination }})</p>
+    <div class="form-group">
+        <form action="{% url 'fill_registration_form' %}" method="post">
+            {% csrf_token %}
+            <input id="id_examination" hidden="hidden" maxlength="30"
+                   name="examination" type="text" value="{{ examination }}">
+            {{ place }}
+            <input class="btn btn-default" style="margin-top: 1pc" type="submit" value="确定" name="submit"/>
+        </form>
+    </div>
+{% endblock content %}
