@@ -5,7 +5,7 @@
 {% block content %}
     <p class="lead">请填写并确认报名表</p>
     <div class="form-group">
-        <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
+        <form method="post" action="{% url 'save_registration_form' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <table class="table table-hover">
                 <tr>
@@ -34,7 +34,7 @@
                 <input maxlength="32" name="place" type="text" value="{{ place }}" hidden="hidden">
                 {{ form.as_table }}
             </table>
-            <input class="btn btn-default" type="submit" value="保存修改"/>
+            <input class="btn btn-default" type="submit" value="确定"/>
             <input type="hidden" name="next" value="{{ next }}"/>
         </form>
 {% endblock content %}

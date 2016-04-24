@@ -88,3 +88,13 @@ class RegistrationInfoModel(models.Model):
 
     def __str__(self):
         return self.subject + ':' + self.exam_number
+
+    def generate_exam_number(self):
+        """
+        根据考试的科目, 时间, 学生的用户名生成唯一的准考证号
+        :return exam_number:
+        """
+        self.exam_number = str(hash(str(self.exam.subject) +
+                                    str(self.exam.exam_time) +
+                                    str(self.student.user.username)))
+        return self.exam_number

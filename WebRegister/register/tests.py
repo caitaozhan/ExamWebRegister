@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.utils import timezone
 
 from .models import ExamInfoModel, PlaceModel
+from accounts.models import RegistrationInfoModel
 
 # Create your tests here.
 
@@ -35,6 +36,7 @@ BeginRegistrationURL = reverse('begin_registration')
 SelectForExaminationURL = reverse('select_for_examination')
 SelectForPlaceURL = reverse('select_for_place')
 FillRegistrationFormURL = reverse('fill_registration_form')
+SaveRegistrationFormURL = reverse('save_registration_form')
 
 
 def response_is_html(response, title=None):
@@ -169,3 +171,76 @@ class TestFillRegistrationFormView(TestCase):
         self.assertContains(response, '请填写并确认报名表')
         for value in registration_form_data.values():
             self.assertContains(response, value)
+
+
+class TestSaveRegistrationFormView(TestCase):
+    """
+    该视图接受包含完整考试报名表的POST, 验证并处理表单, 将其存入考试报名表中
+    """
+
+    def setUp(self):
+        self.client.post(SignupURL, data=signup_form_data)  # SignUp a new account
+        self.client.post(LoginURL, data=login_form_data)  # Login
+        exam1 = ExamInfoModel(subject='AvailableExamination',
+                              exam_time=timezone.make_aware(timezone.datetime(2017, 1, 1)),
+                              register_deadline=timezone.make_aware(timezone.datetime(2016, 11, 11)),
+                              fee=100, )  # 创建一个合法的考试以供测试
+        place = PlaceModel(place='AvailablePlace')  # 创建一个合法的地点以供测试
+        exam1.save()
+        place.save()
+
+    def POST(self, date=registration_form_data):
+        return self.client.post(SaveRegistrationFormURL, data=date)
+
+    def AssertSaved(self, msg='报名表保存失败'):
+        self.assertEqual(RegistrationInfoModel.objects.count(), 1, msg=msg)
+
+    def AssertNotSave(self, msg):
+        self.assertEqual(RegistrationInfoModel.objects.count(), 0, msg=msg)
+
+    def response_is_error(self, response, error_msg):
+        response_is_html(response, 'error')
+        self.assertContains(response, error_msg)
+
+    def test_view_can_return_error_when_failed(self):
+        response = self.client.get(SaveRegistrationFormURL)
+        self.response_is_error(response, error_msg='错误请求')
+
+    def test_user_can_only_save_registration_for_itself(self):
+        registration_form_with_incorrect_username = registration_form_data.copy()
+        registration_form_with_incorrect_username['username'] = 'other'
+        response = self.POST(registration_form_with_incorrect_username)
+        self.AssertNotSave(msg='保存了包含错误用户的报名表')
+        self.response_is_error(response, error_msg='用户')
+
+    def test_user_can_only_save_registration_when_both_exam_and_place_correct(self):
+        # 使用错误的考试项目进行测试
+        registration_form_with_incorrect_exam = registration_form_data.copy()
+        registration_form_with_incorrect_exam['examination'] = 'other'
+        response = self.POST(registration_form_with_incorrect_exam)
+        self.AssertNotSave(msg='保存了包含错误考试项目的报名表')
+        self.response_is_error(response, error_msg='考试项目或地点不存在')
+        # 使用错误的考试地点进行测试
+        registration_form_with_incorrect_place = registration_form_data.copy()
+        registration_form_with_incorrect_place['place'] = 'other'
+        response = self.POST(registration_form_with_incorrect_place)
+        self.AssertNotSave(msg='保存了包含错误地点的报名表')
+        self.response_is_error(response, error_msg='考试项目或地点不存在')
+
+    def test_view_can_generate_correct_exam_number_for_registration(self):
+        self.POST()
+        self.AssertSaved()
+        registration = RegistrationInfoModel.objects.first()
+        self.assertEqual(registration.exam_number, registration.generate_exam_number())
+
+    def test_view_can_save_registration_form_when_everything_is_ok(self):
+        self.POST()
+        self.AssertSaved()
+        registration = RegistrationInfoModel.objects.first()
+        self.assertEqual(registration.student.id_number, registration_form_data['id_number'])
+        # Todo 验证更多的项目是否正确
+
+    def test_view_can_return_inform_page_when_everthing_is_ok(self):
+        response = self.POST()
+        response_is_html(response, 'registration_succeed')
+        self.assertContains(response, '报名成功')

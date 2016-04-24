@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}error{% endblock %}
+
+{% block content %}
+    {% if error_mes %}
+        <p class="lead">{{ error_mes }}</p>
+    {% else %}
+        <p class="lead">错误请求</p>
+    {% endif %}
+{% endblock %}
