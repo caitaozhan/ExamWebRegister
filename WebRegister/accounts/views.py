@@ -30,15 +30,14 @@ def profile(request):
         if user.is_superuser:
             return redirect('/admin')
         user_profile = {  # 获取基本用户信息
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
-            'email': request.user.email,
+            'username': user.username,
+            'email': user.email,
         }
         if hasattr(user, 'student'):
             user_profile.update(user.student.profile_data())  # 获取用户的学生信息
         profile_form = ProfileForm(user_profile, auto_id=False)
     return render(request, 'profile.html', context={
-        'username': request.user.username,
+        'username': user_profile['username'],
         'form': profile_form,
         'head_image_file':
             user_profile['head_image'] if 'head_image' in user_profile else '',  # 指定头像文件的位置

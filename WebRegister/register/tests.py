@@ -19,6 +19,15 @@ login_form_data = {
     'password': signup_form_data['password'],
 }
 
+registration_form_data = {
+    'username': signup_form_data['username'],
+    'examination': 'AvailableExamination',
+    'place': 'AvailablePlace',
+    'gender': signup_form_data['gender'],
+    'id_number': signup_form_data['id_number'],
+    'phone': signup_form_data['phone'],
+}
+
 LoginURL = reverse('login')
 SignupURL = reverse('signup')
 ExaminationsURL = reverse('examinations')
@@ -158,4 +167,5 @@ class TestFillRegistrationFormView(TestCase):
                                           'place': 'AvailablePlace'})
         response_is_html(response, title='fill_registration_form')
         self.assertContains(response, '请填写并确认报名表')
-        # Todo: 验证页面中包含的足够详细的信息
+        for value in registration_form_data.values():
+            self.assertContains(response, value)
