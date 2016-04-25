@@ -17,12 +17,15 @@ class ExamInfoModel(models.Model):
     def __str__(self):
         return self.subject
 
-    def print_exam(self):
+    @property
+    def getter(self):
         return {
             'subject': self.subject,
             'exam_time': self.exam_time,
+            'exam_time_end': self.exam_time_end,
             'register_deadline': self.register_deadline,
-            'fee': self.exam_time,
+            'fee': self.fee,
+            'notes': self.notes,
         }
 
 

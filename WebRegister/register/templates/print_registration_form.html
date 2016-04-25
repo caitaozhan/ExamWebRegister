@@ -1,95 +1,85 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
+<html lang="en">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
-<title>Õ²²ÅèºµÄÊý¾Ý¿âÏµÍ³¹¤³ÌÊ¦¿¼ÊÔ±¨Ãû±í</title>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ student.username }}çš„{{ exam.subject }}è€ƒè¯•æŠ¥åè¡¨</title>
 </head>
 
 <body style="background-color:#FFF;">
 
-<table width="600" border="0" cellspacing="0" cellpadding="0">
+<table width="620" border="0" cellspacing="0" cellpadding="0">
   <tbody><tr>
     <td><table width="100%%" border="0" cellspacing="0" cellpadding="0" class="table_line1" style="border:1px #666 solid;">
       <tbody><tr>
-        <td height="30" colspan="4" align="center"><strong class="black105">È«¹ú¼ÆËã»ú¼¼ÊõÓëÈí¼þ×¨Òµ¼¼Êõ×Ê¸ñ£¨Ë®Æ½£©¿¼ÊÔ ±¨Ãû±í</strong></td>
+        <td height="30" colspan="4" align="center"><strong class="black105">å…¨å›½ {{ exam.subject }}è€ƒè¯• æŠ¥åè¡¨</strong></td>
       </tr>
       <tr>
-        <td height="50" colspan="4" align="left" style="padding:10pt;">×¢£º±¾±¨Ãû±íÐëÍ³Ò»Ê¹ÓÃ<span class="red9">A4·ùÃæ</span>´òÓ¡Ö½´òÓ¡(×ÔÐÐ´òÓ¡£¬ºÚ°×²ÊÉ«¾ù¿É)¡£µç×ÓÕÕÆ¬ÔÝÎ´Ìá½»»òÎ´±»ÉóºËÊ±Ò²¿É½É·Ñ£¬µ«Îñ±ØÓ¦ÔÚ±¨¿¼½ØÖ¹ÆÚÇ°Íê³ÉÉÏ´«µç×ÓÕÕÆ¬¡£</td>
+        <td height="50" colspan="4" align="left" style="padding:10pt;">æ³¨ï¼šæœ¬æŠ¥åè¡¨é¡»ç»Ÿä¸€ä½¿ç”¨<span class="red9">A4å¹…é¢</span>æ‰“å°çº¸æ‰“å°(è‡ªè¡Œæ‰“å°ï¼Œé»‘ç™½å½©è‰²å‡å¯)ã€‚ç”µå­ç…§ç‰‡æš‚æœªæäº¤æˆ–æœªè¢«å®¡æ ¸æ—¶ä¹Ÿå¯ç¼´è´¹ï¼Œä½†åŠ¡å¿…åº”åœ¨æŠ¥è€ƒæˆªæ­¢æœŸå‰å®Œæˆä¸Šä¼ ç”µå­ç…§ç‰‡ã€‚</td>
       </tr>
       <tr>
-        <td width="170" height="30" align="right">ÍøÉÏ±¨ÃûºÅ</td>
+        <td width="170" height="30" align="right">è€ƒè¯•æŠ¥åå·ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30" colspan="2" class="red105"><strong>0545 0419 6400 44</strong></td>
+        <td height="30" colspan="2" class="red105"><strong>{{ exam_number }}</strong></td>
       </tr>
       <tr>
-        <td width="170" height="30" align="right">ÐÕÃû</td>
+        <td width="170" height="30" align="right">å§“åï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td width="270" height="30" class="blue105">Õ²²Åèº</td>
-        <td width="130" rowspan="5" align="center">
-  <img src="./Õ²²ÅèºµÄÊý¾Ý¿âÏµÍ³¹¤³ÌÊ¦¿¼ÊÔ±¨Ãû±í_files/387337759.jpg" width="100" height="150">
+        <td width="270" height="30">{{ student.username }}</td>
+        <td width="100" rowspan="7" align="center">
+        <img src="/media/{{ student.head_image }}" align="left" class="img-thumbnail" alt="210x150"
+                                 data-holder-rendered="true" style="width: 150px; height: 210px;">
   </td>
       </tr>
       <tr>
-        <td width="170" height="30" align="right">ÐÔ±ð</td>
+        <td width="170" height="30" align="right">æ€§åˆ«ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30">ÄÐ</td>
+        <td height="30">{{ student.gender }}</td>
         </tr>
       <tr>
-        <td width="170" height="30" align="right">Ö¤¼þÀàÐÍ¼°ºÅÂë</td>
+        <td width="170" height="30" align="right">èº«ä»½è¯ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30">µÚ¶þ´ú¾ÓÃñÉí·ÝÖ¤420111199505087310</td>
+        <td height="30">{{ student.id_number }}</td>
         </tr>
       <tr>
-        <td width="170" height="30" align="right">ÊÖ»úºÅÂë</td>
+        <td width="170" height="30" align="right">æ‰‹æœºå·ç ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30">18502718448</td>
+        <td height="30">{{ student.phone }}</td>
+        </tr>
+       <tr>
+        <td width="170" height="30" align="right">è€ƒè¯•å¼€å§‹æ—¶é—´ï¼š</td>
+        <td width="30" height="30">&nbsp;</td>
+        <td height="30">{{ exam.exam_time }}</td>
         </tr>
       <tr>
-        <td width="170" height="30" align="right">Ö°Òµ×´Ì¬</td>
+        <td width="170" height="30" align="right">è€ƒè¯•ç»“æŸæ—¶é—´ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30">È«ÈÕÖÆÔÚ¶ÁÑ§Éú</td>
+        <td height="30">{{ exam.exam_time_end }}</td>
         </tr>
-
       <tr>
-        <td width="170" height="30" align="right">ÔÚ¶ÁÑ§Ð£</td>
+        <td width="170" height="30" align="right">æ‰€é€‰æŠ¥åç‚¹ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30" colspan="2">ÖÐ¹úµØÖÊ´óÑ§¡¡¼ÆËã»úÑ§Ôº¡¡191132</td>
-      </tr>
-
-      <tr>
-        <td width="170" height="30" align="right">ËùÑ¡±¨Ãûµã</td>
-        <td width="30" height="30">&nbsp;</td>
-        <td height="30" colspan="2" class="blue105">ÖÐ¹úµØÖÊ´óÑ§</td>
+        <td height="30" colspan="2" class="blue105">{{ place }}</td>
       </tr>
       <tr>
-        <td width="170" height="30" align="right">±¨ÃûµãµØÖ·</td>
+        <td width="170" height="30" align="right">æŠ¥åç‚¹åœ°å€ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30" colspan="2" class="blue105">Îä²ýÖÐ¹úµØÖÊ´óÑ§½ÌÎñ´¦¿¼ÊÔ¹ÜÀíÖÐÐÄ</td>
+        <td height="30" colspan="2" class="blue105">{{ place }}-æ•™åŠ¡å¤„è€ƒè¯•ç®¡ç†ä¸­å¿ƒ</td>
       </tr>
       <tr>
-        <td width="170" height="30" align="right">±¨ÃûµãÁªÏµ·½Ê½</td>
+        <td width="170" height="30" align="right">åº”ç¼´çº³è´¹ç”¨é¢ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30" colspan="2">027-67885011¡¡ÍõÒ»²¨</td>
+        <td height="30" colspan="2" class="blue105">ï¿¥{{ exam.fee }} (è¯·è‡ªå¤‡é›¶é’ž)</td>
       </tr>
       <tr>
-        <td width="170" height="30" align="right">Ëù±¨×Ê¸ñÃû³Æ</td>
+        <td width="170" height="30" align="right">æŠ¥åç¼´è´¹æˆªæ­¢æ—¶é—´ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30" colspan="2" class="blue105">Êý¾Ý¿âÏµÍ³¹¤³ÌÊ¦</td>
+        <td height="30" colspan="2" class="red105"><span class="blue105">{{ exam.register_deadline }}ï¼ˆæ­¤æˆªæ­¢æ—¶é—´ä¸ºå…¨çœå„æŠ¥åç‚¹æœ¬è€ƒå­£çš„æœ€æ™šæˆªæ­¢æ—¶é—´ï¼Œå„æŠ¥åç‚¹å¯èƒ½ä¼šæœ‰æ‰€æå‰ï¼Œè¯·æ³¨æ„ä¸‹æ–¹â€œå¤‡æ³¨â€æ ï¼Œå¹¶å°½æ—©å‰å¾€çŽ°åœºè¿›è¡Œç¡®è®¤ã€‚ï¼‰</span></td>
       </tr>
       <tr>
-        <td width="170" height="30" align="right">Ó¦½ÉÄÉ·ÑÓÃ¶î</td>
+        <td width="170" height="30" align="right">å¤‡æ³¨ï¼š</td>
         <td width="30" height="30">&nbsp;</td>
-        <td height="30" colspan="2" class="blue105">£¤140(Çë×Ô±¸Áã³®)</td>
-      </tr>
-      <tr>
-        <td width="170" height="30" align="right">ÏÖ³¡È·ÈÏ¼°½É·Ñ½ØÖ¹Ê±¼ä</td>
-        <td width="30" height="30">&nbsp;</td>
-        <td height="30" colspan="2" class="red105"><span class="blue105">2016-4-18 17:00:00£¨´Ë½ØÖ¹Ê±¼äÎªÈ«Ê¡¸÷±¨Ãûµã±¾¿¼¼¾µÄ×îÍí½ØÖ¹Ê±¼ä£¬¸÷±¨Ãûµã¿ÉÄÜ»áÓÐËùÌáÇ°£¬Çë×¢ÒâÏÂ·½¡°±¸×¢¡±À¸£¬²¢¾¡ÔçÇ°ÍùÏÖ³¡½øÐÐÈ·ÈÏ¡££©</span></td>
-      </tr>
-      <tr>
-        <td width="170" height="30" align="right">±¸×¢</td>
-        <td width="30" height="30">&nbsp;</td>
-        <td height="30" colspan="2">4ÔÂ18¡¢19ÈÕ£¬ÉÏÎç8:30-11:30£¬ÏÂÎç14:00-16:30£»µØµã£º½ÌÎñ´¦¿¼ÊÔ¹ÜÀíÖÐÐÄ</td>
+        <td height="30" colspan="2">{{ exam.notes }}</td>
       </tr>
     </tbody></table></td>
   </tr>

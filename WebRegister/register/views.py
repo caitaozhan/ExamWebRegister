@@ -114,7 +114,7 @@ def save_registration_form(request):
             return render(request, 'error.html', context={'error_mes': '无法保存表单到数据库'})
         else:
             return render(request, 'registration_success.html', context={'exam_number': exam_number})
-    return render(request, 'error.html')                                    # 依靠报名号，确定报名信息，从而打印出来
+    return render(request, 'error.html')                                # 依靠报名号，确定报名信息，从而打印出来
 
 
 # , username, examination, time, place
@@ -126,12 +126,12 @@ def print_registration_form(request):
             student = user.student
             exam_number = request.GET['exam_number']
             registration = RegistrationInfoModel.objects.get(exam_number=exam_number)
-
+            exam = registration.exam
             is_paid = registration.is_paid
             place = registration.place
 
-            return render(request, 'print_registration_form.html', context={'student': student.profile(),
-                                                                            'exam': exam.print(),
+            return render(request, 'print_registration_form.html', context={'student': student.profile,
+                                                                            'exam': exam.getter,
                                                                             'exam_number': exam_number,
                                                                             'is_paid': is_paid,
                                                                             'place': place, })
