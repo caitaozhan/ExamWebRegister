@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}registration_success{% endblock %}
+
+{% block content %}
+    <p class="lead">恭喜您，报名成功！</p>
+    <p></p>
+    <p>好好复习，认真备考</p>
+    <p></p>
+    <div class="form-group">
+        <form action="{% url 'print_registration_form' %}" method="get">
+            {% csrf_token %}
+            <input  hidden="hidden" maxlength="30" name="exam_number" type="text" value="{{ exam_number }}">
+            <input class="btn btn-default" style="margin-top: 1pc" type="submit" value="点击此按钮，打印报名表" name="submit"/>
+        </form>
+    </div>
+{% endblock %}

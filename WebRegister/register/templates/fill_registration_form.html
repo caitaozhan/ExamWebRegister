@@ -10,7 +10,7 @@
             <table class="table table-hover">
                 <tr>
                     <th>用户名:</th>
-                    <td>{{ username }}</td>
+                    <td align="left">&nbsp;&nbsp;&nbsp;{{ username }}</td>
                 </tr>
                 {% if head_image_file %}
                     <tr><th></th>
@@ -23,11 +23,11 @@
                 {% endif %}
                 <tr>
                     <th>考试项目:</th>
-                    <td>{{ examination }}</td>
+                    <td align="left">&nbsp;&nbsp;&nbsp;{{ examination }}</td>
                 </tr>
                 <tr>
                     <th>考试地点:</th>
-                    <td>{{ place }}</td>
+                    <td align="left">&nbsp;&nbsp;&nbsp;{{ place }}</td>
                 </tr>
                 <input maxlength="254" name="username" type="text" value="{{ username }}" hidden="hidden">
                 <input maxlength="30" name="examination" type="text" value="{{ examination }}" hidden="hidden">

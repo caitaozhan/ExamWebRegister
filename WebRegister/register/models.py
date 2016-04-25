@@ -17,6 +17,14 @@ class ExamInfoModel(models.Model):
     def __str__(self):
         return self.subject
 
+    def print_exam(self):
+        return {
+            'subject': self.subject,
+            'exam_time': self.exam_time,
+            'register_deadline': self.register_deadline,
+            'fee': self.exam_time,
+        }
+
 
 # 这个表里面保存了上百个大学，作为考试地点
 class PlaceModel(models.Model):

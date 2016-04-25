@@ -3,12 +3,14 @@ import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.utils import timezone
 from register.models import ExamInfoModel, PlaceModel
 
 GENDER_TYPE = (
     ('男', '男'),
     ('女', '女')
 )
+
 
 # IMAGE_DIR = os.path.join(settings.MEDIA_ROOT, 'images')
 
@@ -79,19 +81,20 @@ class Student(models.Model):
 class RegistrationInfoModel(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)  # 外码
     exam = models.ForeignKey(ExamInfoModel, on_delete=models.CASCADE)  # 外码
-    exam_number = models.CharField(max_length=30)  # 准考证号
+    exam_number = models.CharField(max_length=30, unique=True)  # 准考证号，这个是唯一
     is_paid = models.BooleanField(default=False)  # 是否缴费
     place = models.ForeignKey(PlaceModel, on_delete=models.CASCADE, default="25#324")  # 弄一个下拉框，选择一个地点
 
     def __str__(self):
-        return self.subject + ':' + self.exam_number
+        return self.exam_number
 
     def generate_exam_number(self):
         """
         根据考试的科目, 时间, 学生的用户名生成唯一的准考证号
         :return exam_number:
         """
-        self.exam_number = str(hash(str(self.exam.subject) +
-                                    str(self.exam.exam_time) +
-                                    str(self.student.user.username)))
+        hash_number = hash(str(self.exam.subject) + str(self.exam.exam_time)
+                         + str(self.student.user.username) + str(timezone.now))  # 难以想象hash出来会有重复的数字
+        hash_number = -hash_number if hash_number < 0 else hash_number
+        self.exam_number = str(hash_number)
         return self.exam_number

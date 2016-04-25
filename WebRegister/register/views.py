@@ -6,6 +6,7 @@ from django.db.utils import IntegrityError
 from django.utils import timezone
 
 from .models import ExamInfoModel, PlaceModel
+from accounts.models import RegistrationInfoModel
 from .forms import ExaminationSelectForm, PlaceSelectForm, RegistrationForm
 from .factories import create_registration
 
@@ -97,12 +98,12 @@ def save_registration_form(request):
                 return render(request, 'error.html', context={'error_mes': '报名用户和当前登录用户不符'})
             # 验证考试项目和地点
             examination = ExamInfoModel.objects.order_by('exam_time').get(subject=examination)
+
             if timezone.now() > examination.register_deadline:
                 return render(request, 'error.html', context={'error_mes': '该考试项目以过期'})
             place = PlaceModel.objects.get(place=place)
             # 保存报名信息
-            create_registration({'student': user.student, 'examination': examination, 'place': place})
-
+            exam_number = create_registration({'student': user.student, 'examination': examination, 'place': place})
         except KeyError:
             return render(request, 'error.html', context={'error_mes': '报名信息不全'})
         except User.DoesNotExist:
@@ -112,18 +113,30 @@ def save_registration_form(request):
         except IntegrityError:
             return render(request, 'error.html', context={'error_mes': '无法保存表单到数据库'})
         else:
-            return render(request, 'base.html', context={
-                'title': 'registration_succeed',
-                'content': '<p class="lead">报名成功</p>',
-            })
-    return render(request, 'error.html')
+            return render(request, 'registration_success.html', context={'exam_number': exam_number})
+    return render(request, 'error.html')                                    # 依靠报名号，确定报名信息，从而打印出来
 
 
+# , username, examination, time, place
 @login_required
-def present_registration_form(request, username, examination, time, place):
-    if request.POST == 'GET':
-        # Todo: 显示相应的注册表单的信息
-        pass
+def print_registration_form(request):
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(username=request.user.username)
+            student = user.student
+            exam_number = request.GET['exam_number']
+            registration = RegistrationInfoModel.objects.get(exam_number=exam_number)
+
+            is_paid = registration.is_paid
+            place = registration.place
+
+            return render(request, 'print_registration_form.html', context={'student': student.profile(),
+                                                                            'exam': exam.print(),
+                                                                            'exam_number': exam_number,
+                                                                            'is_paid': is_paid,
+                                                                            'place': place, })
+        except:
+            return render(request, 'error.html', context={'error_mes': '报名表打印错误'})
     else:
         # Todo: 显示错误信息并重定向
-        pass
+        return render(request, 'error.html', context={'error_mes': '不是GET方法'})

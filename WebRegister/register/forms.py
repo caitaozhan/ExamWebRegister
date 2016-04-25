@@ -29,8 +29,7 @@ class PlaceSelectForm(forms.Form):
 
 class RegistrationForm(forms.Form):
     gender = forms.CharField(label="性别", max_length=6,
-                             widget=forms.Select(choices=GENDER_TYPE,
-                                                 attrs=customize_attrs))
+                             widget=forms.Select(choices=GENDER_TYPE, attrs=customize_attrs))
     phone = forms.CharField(label="手机号", max_length=20,
                             widget=forms.TextInput(attrs=customize_attrs))
     id_number = forms.CharField(label="身份证号", max_length=30,
