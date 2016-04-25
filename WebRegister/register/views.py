@@ -7,8 +7,7 @@ from django.utils import timezone
 
 from .models import ExamInfoModel, PlaceModel
 from .forms import ExaminationSelectForm, PlaceSelectForm, RegistrationForm
-
-from accounts.models import RegistrationInfoModel
+from .factories import create_registration
 
 
 # Create your views here.
@@ -65,7 +64,7 @@ def fill_registration_form(request):
                 'email': user.email,
             }
             if hasattr(user, 'student'):
-                user_profile.update(user.student.profile_data())  # 获取用户的学生信息
+                user_profile.update(user.student.profile)  # 获取用户的学生信息
             registration_form = RegistrationForm(user_profile, auto_id=False)
         except ObjectDoesNotExist:
             return redirect(begin_registration)  # Todo: 增加错误信息显示
@@ -82,56 +81,41 @@ def fill_registration_form(request):
 @login_required
 def save_registration_form(request):
     if request.method == 'POST':
-        # 验证表单中包含了所需的所有信息
         try:
             username = request.POST['username']
             examination = request.POST['examination']
             place = request.POST['place']
-            gender = request.POST['gender']
-            phone = request.POST['phone']
-            id_number = request.POST['id_number']
-        except KeyError:
-            return render(request, 'error.html', context={'error_mes': '报名信息不全'})
 
-        # 验证当前登录用户和当前表单中用户的一致性
-        try:
+            # gender = request.POST['gender']
+            # phone = request.POST['phone']
+            # id_number = request.POST['id_number']
+            # Todo 用户在注册认为个人信息有误并提出修改是可以的
+
+            # 验证用户
             user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            return render(request, 'error.html', context={'error_mes': '报名请求的用户不存在'})
-        if request.user != user:
-            return render(request, 'error.html', context={'error_mes': '报名用户和当前登录用户不符'})
-
-        # 验证所提交的考试和地点可用,取出相应的 ExamInfoModel 和 PlaceModel 的对象
-        try:
-            # 自动选取该考试项目中时间最近的一次考试
+            if request.user != user:
+                return render(request, 'error.html', context={'error_mes': '报名用户和当前登录用户不符'})
+            # 验证考试项目和地点
             examination = ExamInfoModel.objects.order_by('exam_time').get(subject=examination)
-            # 检查该考试项目是否过期
             if timezone.now() > examination.register_deadline:
                 return render(request, 'error.html', context={'error_mes': '该考试项目以过期'})
             place = PlaceModel.objects.get(place=place)
-        except ObjectDoesNotExist:
-            return render(request, 'error.html', context={'error_mes': '考试项目或地点不存在'})
+            # 保存报名信息
+            create_registration({'student': user.student, 'examination': examination, 'place': place})
 
-        # 保存考试注册的表单到数据库
-        try:
-            registration = RegistrationInfoModel(student=user.student,
-                                                 exam=examination,
-                                                 is_paid=False,
-                                                 place=place)
-            registration.generate_exam_number()  # 生成准考证号
-            registration.save()
+        except KeyError:
+            return render(request, 'error.html', context={'error_mes': '报名信息不全'})
+        except User.DoesNotExist:
+            return render(request, 'error.html', context={'error_mes': '报名请求的用户不存在'})
+        except ObjectDoesNotExist:  # ExamInfoModel.DoesNotExist and PlaceModel.DoesNotExist
+            return render(request, 'error.html', context={'error_mes': '考试项目或地点不存在'})
         except IntegrityError:
             return render(request, 'error.html', context={'error_mes': '无法保存表单到数据库'})
-
-        # 最后验证数据库中确实存在该报名表
-        try:
-            RegistrationInfoModel.objects.get(student=user.student, exam=examination, place=place)
+        else:
             return render(request, 'base.html', context={
                 'title': 'registration_succeed',
                 'content': '<p class="lead">报名成功</p>',
             })
-        except RegistrationInfoModel.DoesNotExist:
-            return render(request, 'error.html', context={'error_mes': '报名失败'})
     return render(request, 'error.html')
 
 

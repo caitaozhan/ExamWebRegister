@@ -61,11 +61,8 @@ class Student(models.Model):
             thumbnail_image(new_head_image_path)  # 对头像进行缩略功能
         self.save()  # 保存数据
 
-    def profile_data(self):
-        """
-        获取用户的 profile (应包含所有的希望显示在 profile 页面的个人信息)
-        :return profile_data:
-        """
+    @property
+    def profile(self):
         return {
             'username': self.user.username,
             'email': self.user.email,

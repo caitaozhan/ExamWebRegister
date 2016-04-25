@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
 from django.db.utils import IntegrityError
 
-from .models import Student
+from .factories import create_student
 from .forms import SignupForm, ProfileForm, LoginForm
 
 
@@ -34,7 +34,7 @@ def profile(request):
             'email': user.email,
         }
         if hasattr(user, 'student'):
-            user_profile.update(user.student.profile_data())  # 获取用户的学生信息
+            user_profile.update(user.student.profile)  # 获取用户的学生信息
         profile_form = ProfileForm(user_profile, auto_id=False)
     return render(request, 'profile.html', context={
         'username': user_profile['username'],
@@ -81,13 +81,7 @@ def sign_up(request):
         user_form = SignupForm(request.POST)
         if user_form.is_valid():
             try:
-                new_user = User.objects.create_user(username=user_form.cleaned_data['username'],
-                                                    password=user_form.cleaned_data['password'])
-                new_student = Student(user=new_user,
-                                      id_number=user_form.cleaned_data['id_number'],
-                                      gender=user_form.cleaned_data['gender'],
-                                      phone=user_form.cleaned_data['phone'])
-                new_student.save()
+                create_student(user_form.cleaned_data)
                 return redirect(log_in)  # Todo: 存在新用户学生信息无法保存的 bug ?
             except IntegrityError:
                 pass
