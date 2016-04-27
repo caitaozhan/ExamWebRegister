@@ -56,6 +56,25 @@
             <input class="btn btn-default" type="submit" value="保存修改"/>
             <input type="hidden" name="next" value="{{ next }}"/>
         </form>
+        <hr />
+        {% if registrations %}
+            <table class="table">
+                {% for registration in registrations %}
+                    <tr>
+                        <th>{{ registration.exam }}</th>
+                        <td align="right">
+                            <form action="{% url 'print_registration_form' %}" method="get" target="_blank">
+                                {% csrf_token %}
+                                <input hidden="hidden" maxlength="30" name="exam_number" type="text"
+                                       value="{{ registration.exam_number }}">
+                                <input class="btn btn-default" type="submit" value="打印报名表" name="submit"/>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
     </div>
     {% if user.is_superuser %}
         <p><a href="/admin">跳转到管理页面</a></p>

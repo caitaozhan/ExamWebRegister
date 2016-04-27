@@ -10,7 +10,7 @@
     <div class="form-group">
         <form action="{% url 'print_registration_form' %}" method="get" target="_blank">
             {% csrf_token %}
-            <input  hidden="hidden" maxlength="30" name="exam_number" type="text" value="{{ exam_number }}">
+            <input hidden="hidden" maxlength="30" name="exam_number" type="text" value="{{ exam_number }}">
             <input class="btn btn-default" style="margin-top: 1pc" type="submit" value="点击此按钮，打印报名表" name="submit"/>
         </form>
     </div>

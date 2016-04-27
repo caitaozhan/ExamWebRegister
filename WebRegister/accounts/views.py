@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
 from django.db.utils import IntegrityError
 
+
+from .models import RegistrationInfoModel
 from .factories import create_student
 from .forms import SignupForm, ProfileForm, LoginForm
 
@@ -36,11 +38,13 @@ def profile(request):
         if hasattr(user, 'student'):
             user_profile.update(user.student.profile)  # 获取用户的学生信息
         profile_form = ProfileForm(user_profile, auto_id=False)
+        registrations = RegistrationInfoModel.objects.filter(student=user.student)
     return render(request, 'profile.html', context={
         'username': user_profile['username'],
         'form': profile_form,
         'head_image_file':
             user_profile['head_image'] if 'head_image' in user_profile else '',  # 指定头像文件的位置
+        'registrations': registrations if registrations else None,
     })
 
 
