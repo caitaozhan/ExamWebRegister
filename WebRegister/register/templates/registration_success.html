@@ -8,7 +8,7 @@
     <p>好好复习，认真备考</p>
     <p></p>
     <div class="form-group">
-        <form action="{% url 'print_registration_form' %}" method="get">
+        <form action="{% url 'print_registration_form' %}" method="get" target="_blank">
             {% csrf_token %}
             <input  hidden="hidden" maxlength="30" name="exam_number" type="text" value="{{ exam_number }}">
             <input class="btn btn-default" style="margin-top: 1pc" type="submit" value="点击此按钮，打印报名表" name="submit"/>
