@@ -242,5 +242,5 @@ class TestSaveRegistrationFormView(TestCase):
 
     def test_view_can_return_inform_page_when_everthing_is_ok(self):
         response = self.POST()
-        response_is_html(response, 'registration_succeed')
-        self.assertContains(response, '报名成功')
+        response_is_html(response, 'registration_success')
+        self.assertContains(response, '恭喜您，报名成功！')
