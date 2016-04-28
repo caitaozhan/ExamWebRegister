@@ -1,4 +1,4 @@
-# ExamWebRegister （考试网络报名系统）
+# ExamWebRegister
 a web project written in Python under Django and uses SQLite as database.
 
 ##Breif Introduction
