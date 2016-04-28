@@ -1,4 +1,5 @@
 # ExamWebRegister （考试网络报名系统）
+a web project written in Python under Django and uses SQLite as database.
 
 ##Breif Introduction
 This web application project is the class project of course "Web and database technologies"(网络数据库技术), written by python under Django framework and uses SQlite as its database. This app is designed to register examimations on web.
